@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use App\Interfaces\UserInterface;
 use App\Models\User;
 
-class UserService
+class UserService implements UserInterface
 {
     /**
      * Create or update new user.
@@ -22,6 +23,11 @@ class UserService
         $user->fill($data);
         $user->save();
         return $user;
+    }
+
+    public function delete($user)
+    {
+        //
     }
 }
 

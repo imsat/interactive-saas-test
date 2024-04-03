@@ -4,7 +4,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InventoryItemController;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +20,6 @@ Route::prefix('/v1')->group(function () {
     Route::post('/register', [RegisterController::class, 'register']);
 
     Route::middleware('auth:api')->group(function () {
-        Route::apiResource('/users', UserController::class);
         Route::apiResource('/inventories', InventoryController::class);
         Route::apiResource('/inventories/{inventory}/inventoryItems', InventoryItemController::class);
     });

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class InventoryController extends Controller
 {
-    private $inventoryService;
+    protected $inventoryService;
 
     public function __construct(InventoryService $inventoryService)
     {

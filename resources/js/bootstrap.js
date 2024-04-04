@@ -4,13 +4,17 @@ import Swal from "sweetalert2";
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// Set axios base url
 window.axios.defaults.baseURL = '/api/v1';
 
+// Set token
 const apiToken = localStorage.getItem('token');
 if (apiToken) {
     window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + apiToken
 }
 
+
+// Toast setup
 export const confirm = (title = null, text) => {
     return Swal.fire({
         title: title || 'Are you sure?',
@@ -35,7 +39,6 @@ export const successToast = (msg, options) => {
     })
     Swal.fire(options)
 }
-
 export const errorToast = (msg, options, timer= 3000) => {
     options = Object.assign({
         toast: true,

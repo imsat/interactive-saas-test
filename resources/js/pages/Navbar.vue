@@ -1,4 +1,6 @@
 <script>
+import {successToast} from "../bootstrap.js";
+
 export default {
     name: "Navbar",
     data() {
@@ -9,10 +11,12 @@ export default {
     methods: {
         async logout() {
             await axios.post('/logout', this.loginForm).then(res => {
+                const {message} = res.data
+                successToast(message)
                 localStorage?.removeItem('token')
                 localStorage?.removeItem('user')
                 this.$router.push('/login')
-                location.reload()
+                // location.reload()
             })
         }
     }

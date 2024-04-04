@@ -1,5 +1,7 @@
 <script>
 
+import {successToast} from "../../bootstrap.js";
+
 export default {
     name: "Login",
     data() {
@@ -14,9 +16,10 @@ export default {
     methods: {
         async signIn() {
             await axios.post('/login', this.loginForm).then(res => {
-                const {token, user} = res.data.data
+                const {token, user, message} = res.data.data
+                successToast(message)
                 localStorage?.setItem('token', token)
-                localStorage?.setItem('user', user)
+                localStorage?.setItem('user', JSON.stringify(user))
                 this.loginForm = {}
                 this.$router.push('/')
                 location.reload()

@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import {successToast} from "../../bootstrap.js";
+
 export default {
     name: "Register",
     data() {
@@ -40,9 +42,10 @@ export default {
     methods: {
         async register() {
             await axios.post('/register', this.registerForm).then(res => {
-                const {token, user} = res.data.data
+                const {token, user, message} = res.data.data
+                successToast(message)
                 localStorage?.setItem('token', token)
-                localStorage?.setItem('user', user)
+                localStorage?.setItem('user', JSON.stringify(user))
                 this.registerForm = {}
                 this.$router.push('/')
                 location.reload()

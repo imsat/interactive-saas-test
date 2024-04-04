@@ -108,5 +108,6 @@ class InventoryItemController extends Controller
         if ($inventory->user_id != Auth::id()) {
             return $this->apiResponse(false, $errorMessage, null, $statusCode);
         }
+        return true;
     }
 }

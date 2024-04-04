@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\InventoryInterface;
 use App\Models\Inventory;
-use App\Services\InventoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +12,7 @@ class InventoryController extends Controller
 {
     protected $inventoryService;
 
-    public function __construct(InventoryService $inventoryService)
+    public function __construct(InventoryInterface $inventoryService)
     {
         $this->inventoryService = $inventoryService;
     }
@@ -40,7 +40,6 @@ class InventoryController extends Controller
      */
     public function show(Inventory $inventory)
     {
-        //
         try {
             return $this->apiResponse(true, 'Inventory details', $inventory);
         } catch (\Exception $e) {

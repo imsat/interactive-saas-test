@@ -14,7 +14,7 @@ export default {
     <PageHeading title="Inventory Add">
         <GoBackBtn/>
     </PageHeading>
-    <InventoryAddEditForm action="create"></InventoryAddEditForm>
+    <InventoryAddEditForm action="add"></InventoryAddEditForm>
 </template>
 
 <style scoped>

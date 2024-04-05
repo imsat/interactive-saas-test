@@ -43,13 +43,13 @@ export default {
         <form @submit.prevent="signIn">
         <div class="form-floating">
             <input type="email" class="form-control" required id="email" v-model="loginForm.email" placeholder="Email">
-            <label for="email">Email address</label>
+            <label for="email" class="required">Email address</label>
             <Validation :error-text="getError('email')" />
         </div>
         <div class="form-floating">
             <input type="password" class="form-control" required id="password" v-model="loginForm.password"
                    placeholder="Password">
-            <label for="password">Password</label>
+            <label for="password" class="required">Password</label>
             <Validation :error-text="getError('password')" />
         </div>
         <button type="submit" class="btn btn-primary w-100 py-2 my-3">Sign in</button>

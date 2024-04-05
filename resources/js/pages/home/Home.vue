@@ -5,12 +5,12 @@ export default {
 </script>
 
 <template>
-    <div class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo-shadow.png" alt="" width="72" height="57">
-        <h1 class="display-5 fw-bold text-body-emphasis">Simple Inventory Management</h1>
-        <div class="col-lg-6 mx-auto">
-            <router-link to="/inventory" class="btn btn-info">Manage Inventory</router-link>
+    <div class="text-center py-5">
+        <h1 class="text-body-emphasis">Get started with Interactive Care Inventory</h1>
+        <p class="fs-5">Quickly and easily get started with Interactive Care Inventory Management, production-ready system with this barebones example featuring some basic inventory and item modules. View our example to get started.</p>
 
+        <div class="mb-5">
+            <router-link to="/inventory" class="btn btn-info btn-lg px-4">Manage Inventory</router-link>
         </div>
     </div>
 </template>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('inventory_items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('inventory_id')->constrained('inventories')->cascadeOnDelete();
+            $table->foreignId('inventory_id')->index()->constrained('inventories')->cascadeOnDelete();
             $table->string('image')->nullable();
             $table->integer('quantity')->default(1);
             $table->text('description')->nullable();

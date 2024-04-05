@@ -63,7 +63,7 @@ export default {
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Description</th>
+                        <th scope="col" style="width: 40%">Description</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -73,15 +73,15 @@ export default {
                         <td>{{ inventory?.name }}</td>
                         <td>{{ inventory?.description }}</td>
                         <td>
-                            <router-link :to="{ name: 'inventoryEdit', params: {id: inventory?.id} }"
-                                         class="btn btn-sm btn-info me-2" title="Inventory Item">
-                                <i class="bi bi-boxes"></i>
+                            <router-link :to="{ name: 'inventoryItem', params: {inventoryId: inventory?.id} }"
+                                         class="btn btn-sm btn-info ms-2" title="Inventory Item">
+                                <i class="bi bi-building-add"></i>
                             </router-link>
                             <router-link :to="{ name: 'inventoryEdit', params: {id: inventory?.id} }"
-                                         class="btn btn-sm btn-info me-2" title="Edit">
+                                         class="btn btn-sm btn-success ms-2" title="Edit">
                                 <i class="bi bi-pencil-square"></i>
                             </router-link>
-                            <button type="button" class="btn btn-sm btn-danger" title="Delete"
+                            <button type="button" class="btn btn-sm btn-danger ms-2" title="Delete"
                                     @click="deleteInventory(inventory?.id)">
                                 <i class="bi bi-trash"></i>
                             </button>

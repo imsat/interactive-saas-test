@@ -1,7 +1,8 @@
 <script>
-import {successToast} from "../../bootstrap.js";
+import {errorToast, successToast} from "../../bootstrap.js";
 import Pagination from "../Pagination.vue";
 import PageHeading from "../PageHeading.vue";
+
 export default {
     name: "InventoryAddEditForm",
     components: {PageHeading, Pagination},
@@ -33,9 +34,14 @@ export default {
     methods: {
         handleSave() {
             let apiUrl = `/inventories`
-            if (this.id) {
+            if (this.action === 'edit') {
                 apiUrl = `/inventories/${this.id}`
                 this.inventoryForm._method = 'PUT'
+
+                if (!this.id) {
+                    errorToast('Something went wrong')
+                    return;
+                }
             }
             this.isLoading = true
             axios.post(apiUrl, this.inventoryForm).then(res => {
@@ -66,24 +72,33 @@ export default {
 </script>
 
 <template>
-    <div class="d-flex justify-content-center">
-    <div class="card shadow w-50">
+    <div class="card shadow">
         <div class="card-body">
             <form @submit.prevent="handleSave">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" required id="name" v-model="inventoryForm.name" placeholder="Name">
-                    <label for="name">Name</label>
-                    <Validation :error-text="getError('name')" />
+                <div class="row g-2 py-3">
+                    <div class="col-md">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" required id="name" v-model="inventoryForm.name"
+                                   placeholder="Name">
+                            <label for="name" >Name</label>
+                            <Validation :error-text="getError('name')"/>
+                        </div>
+                    </div>
+
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Description" id="description"
+                                      v-model="inventoryForm.description"></textarea>
+                            <label for="description">Description</label>
+                            <Validation :error-text="getError('description')"/>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Description" id="description" v-model="inventoryForm.description"></textarea>
-                    <label for="description">Description</label>
-                    <Validation :error-text="getError('description')" />
-                </div>
-                <button type="submit" class="btn btn-sm btn-primary py-2 my-3 float-end"><i class="bi bi-floppy"></i> Save</button>
+                <button type="submit" class="btn btn-sm btn-info float-end"><i class="bi bi-floppy"></i>
+                    Save
+                </button>
             </form>
         </div>
-    </div>
     </div>
 </template>
 

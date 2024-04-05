@@ -23,7 +23,7 @@ class InventoryItemController extends Controller
      */
     public function index(Request $request, Inventory $inventory)
     {
-        $this->checkInventoryOwnership($inventory);
+//        $this->checkInventoryOwnership($inventory);
         try {
             $perPage = data_get($request, 'per_page', 10);
             $data['inventory_items'] = InventoryItem::select('id', 'name', 'image', 'quantity', 'description')
@@ -40,11 +40,24 @@ class InventoryItemController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Inventory $inventory, InventoryItem $inventoryItem)
+    {
+//        $this->checkInventoryOwnership($inventory);
+        try {
+            return $this->apiResponse(true, 'Inventory Item details', $inventoryItem);
+        } catch (\Exception $e) {
+            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+        }
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request, Inventory $inventory)
     {
-        $this->checkInventoryOwnership($inventory);
+//        $this->checkInventoryOwnership($inventory);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'quantity' => 'required|integer',
@@ -69,7 +82,7 @@ class InventoryItemController extends Controller
      */
     public function update(Request $request, Inventory $inventory, InventoryItem $inventoryItem)
     {
-        $this->checkInventoryOwnership($inventory);
+//        $this->checkInventoryOwnership($inventory);
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|string',
             'quantity' => 'nullable|integer',
@@ -93,7 +106,7 @@ class InventoryItemController extends Controller
      */
     public function destroy(Inventory $inventory, InventoryItem $inventoryItem)
     {
-        $this->checkInventoryOwnership($inventory);
+//        $this->checkInventoryOwnership($inventory);
         try {
             $this->inventoryItemService->delete($inventoryItem);
             return $this->apiResponse(true, 'Deleted successfully');
@@ -105,9 +118,6 @@ class InventoryItemController extends Controller
 
     private function checkInventoryOwnership($inventory, $errorMessage = 'Something went wrong!', $statusCode = 404)
     {
-        if ($inventory->user_id != Auth::id()) {
-            return $this->apiResponse(false, $errorMessage, null, $statusCode);
-        }
-        return true;
+        return !! $inventory->user_id === Auth::id();
     }
 }

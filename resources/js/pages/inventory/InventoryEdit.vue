@@ -13,7 +13,7 @@ export default {
     <PageHeading title="Inventory Edit">
         <GoBackBtn/>
     </PageHeading>
-    <InventoryAddEditForm action="update" :id="$route.params.id"></InventoryAddEditForm>
+    <InventoryAddEditForm action="edit" :id="$route.params.id"></InventoryAddEditForm>
 </template>
 
 <style scoped>

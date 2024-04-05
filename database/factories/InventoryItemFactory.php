@@ -23,8 +23,8 @@ class InventoryItemFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'inventory_id' => mt_rand(1, 200),
-            'image' => 'https://picsum.photos/id/20/575/350',
+            'inventory_id' => mt_rand(1, 600),
+//            'image' => 'https://picsum.photos/id/20/575/350',
             'quantity' => mt_rand(1, 50),
             'description' => static::$paragraph ??= fake()->paragraph(),
         ];

@@ -19,7 +19,7 @@
         <button class="btn btn-primary w-100 py-2 my-3" type="button" @click.prevent="register">Register</button>
 
         <p class="my-5 text-center">Already have an account?
-            <router-link to="/login">Login</router-link>
+            <router-link to="/login" class="text-decoration-none">Login</router-link>
         </p>
     </div>
 </template>

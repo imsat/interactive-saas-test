@@ -32,10 +32,7 @@ export default {
                 </a>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li>
-                        <router-link to="/inventory" class="nav-link px-2" v-if="token">Inventory</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/profile" class="nav-link px-2" v-if="token">Inventory Item</router-link>
+                        <router-link to="/inventory" class="nav-link px-2" v-if="token">Inventory Management</router-link>
                     </li>
                 </ul>
 

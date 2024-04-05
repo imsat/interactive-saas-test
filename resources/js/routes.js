@@ -5,6 +5,8 @@ import Login from './pages/login/Login.vue'
 import Register from './pages/register/Register.vue'
 import Profile from './pages/profile/Profile.vue'
 import Inventory from './pages/inventory/Inventory.vue'
+import InventoryAdd from "./pages/inventory/InventoryAdd.vue";
+import InventoryEdit from "./pages/inventory/InventoryEdit.vue";
 
 const routes = [
     {path: '/', name: 'home', component: Home},
@@ -12,6 +14,8 @@ const routes = [
     {path: '/register', name: 'register', component: Register, meta: {guest: true}},
     {path: '/profile', name: 'profile', component: Profile, meta: {requiresAuth: true}},
     {path: '/inventory', name: 'inventory', component: Inventory, meta: {requiresAuth: true}},
+    {path: '/inventory/add', name: 'inventoryAdd', component: InventoryAdd, meta: {requiresAuth: true}},
+    {path: '/inventory/edit/:id', name: 'inventoryEdit', component: InventoryEdit, meta: {requiresAuth: true}},
 ]
 
 const router = createRouter({

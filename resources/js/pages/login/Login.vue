@@ -56,7 +56,7 @@ export default {
         </form>
 
         <p class="my-5 text-center">New member?
-            <router-link to="/register">Register</router-link>
+            <router-link to="/register" class="text-decoration-none">Register</router-link>
         </p>
     </div>
 </template>

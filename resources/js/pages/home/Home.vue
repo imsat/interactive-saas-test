@@ -1,6 +1,9 @@
 <script>
+import Spinner from "../../components/Spinner.vue";
+
 export default {
-    name: "Home"
+    name: "Home",
+    components: {Spinner}
 }
 </script>
 

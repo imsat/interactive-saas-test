@@ -2,10 +2,11 @@
 import {errorToast, successToast} from "../../bootstrap.js";
 import Pagination from "../Pagination.vue";
 import PageHeading from "../PageHeading.vue";
+import Spinner from "../Spinner.vue";
 
 export default {
     name: "InventoryItemAddEditForm",
-    components: {PageHeading, Pagination},
+    components: {Spinner, PageHeading, Pagination},
     props: {
         action: {
             type: String,
@@ -93,6 +94,7 @@ export default {
 <template>
     <div class="card shadow">
         <div class="card-body">
+            <Spinner v-if="isLoading"/>
             <form @submit.prevent="handleSave">
                 <div class="row g-2 pt-3">
                     <div class="col-md">
@@ -131,7 +133,7 @@ export default {
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-sm btn-info float-end"><i class="bi bi-floppy"></i>
+                <button type="submit" class="btn btn-sm btn-info float-end" :disabled="isLoading"><i class="bi bi-floppy"></i>
                     Save
                 </button>
             </form>

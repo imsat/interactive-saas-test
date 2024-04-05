@@ -5,7 +5,8 @@ export default {
     name: "Navbar",
     data() {
         return {
-            token: localStorage.getItem('token')
+            token: localStorage.getItem('token'),
+            user: JSON.parse(localStorage.getItem('user')),
         }
     },
     methods: {
@@ -43,6 +44,7 @@ export default {
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        {{user?.name}}
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li>

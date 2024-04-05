@@ -2,10 +2,11 @@
 import PageHeading from "../../components/PageHeading.vue";
 import Pagination from "../../components/Pagination.vue";
 import {confirm, successToast} from "../../bootstrap.js";
+import Spinner from "../../components/Spinner.vue";
 
 export default {
     name: "Inventory",
-    components: {Pagination, PageHeading},
+    components: {Spinner, Pagination, PageHeading},
     data() {
         return {
             isLoading: false,
@@ -57,7 +58,8 @@ export default {
             </router-link>
         </div>
         <div class="card-body">
-            <div class="table-responsive small" v-if="!isLoading">
+            <Spinner v-if="isLoading"/>
+            <div class="table-responsive small" v-else>
                 <table class="table table-sm table-bordered text-center">
                     <thead>
                     <tr>

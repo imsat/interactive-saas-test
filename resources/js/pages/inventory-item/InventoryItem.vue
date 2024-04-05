@@ -3,10 +3,11 @@ import PageHeading from "../../components/PageHeading.vue";
 import Pagination from "../../components/Pagination.vue";
 import {confirm, successToast} from "../../bootstrap.js";
 import GoBackBtn from "../../components/GoBackBtn.vue";
+import Spinner from "../../components/Spinner.vue";
 
 export default {
     name: "Inventory Item",
-    components: {GoBackBtn, Pagination, PageHeading},
+    components: {Spinner, GoBackBtn, Pagination, PageHeading},
     data() {
         return {
             isLoading: false,
@@ -64,7 +65,8 @@ export default {
             </router-link>
         </div>
         <div class="card-body">
-            <div class="table-responsive small" v-if="!isLoading">
+            <Spinner v-if="isLoading"/>
+            <div class="table-responsive small" v-else>
                 <table class="table table-sm table-bordered text-center align-middle">
                     <thead>
                     <tr>
@@ -85,7 +87,7 @@ export default {
                         <td>{{ inventoryItem?.description }}</td>
                         <td>
                             <router-link :to="{ name: 'inventoryItemEdit', params: {id: inventoryItem?.id} }"
-                                         class="btn btn-sm btn-info me-2" title="Edit">
+                                         class="btn btn-sm btn-success me-2" title="Edit">
                                 <i class="bi bi-pencil-square"></i>
                             </router-link>
                             <button type="button" class="btn btn-sm btn-danger me-2" title="Delete"

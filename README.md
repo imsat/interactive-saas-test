@@ -15,7 +15,7 @@ This project combines Laravel as the backend framework with Vue js for the front
 1. **Clone the repository:**
 
    ```bash
-   https://github.com/imsat/interactive-saas-test.git
+   git clone https://github.com/imsat/interactive-saas-test.git
 
 2. **Install Laravel dependencies:**
 

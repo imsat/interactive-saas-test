@@ -22,7 +22,7 @@ class InventoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->colorName(),
+            'name' => fake()->city(),
             'user_id' => mt_rand(1, 25),
             'description' => static::$sentence ??= fake()->sentence(),
         ];

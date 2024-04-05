@@ -22,7 +22,7 @@ class InventoryItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word(),
+            'name' => fake()->streetName(),
             'inventory_id' => mt_rand(1, 600),
 //            'image' => 'https://picsum.photos/id/20/575/350',
             'quantity' => mt_rand(1, 50),

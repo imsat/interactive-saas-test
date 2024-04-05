@@ -1,11 +1,14 @@
 <script>
+import PageHeading from "../../components/PageHeading.vue";
+
 export default {
-  name: "Profile"
+  name: "Profile",
+    components: {PageHeading}
 }
 </script>
 
 <template>
-  <h2>Profile</h2>
+    <PageHeading title="Profile"/>
 </template>
 
 <style scoped>

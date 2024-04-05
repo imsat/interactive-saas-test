@@ -1,6 +1,6 @@
-# Test project for analyzenbd
+# Test project for Interactive Care
 
-This project combines Laravel as the backend framework with alpinejs & tailwind css for the frontend. Follow the instructions below to set up and run the project.
+This project combines Laravel as the backend framework with Vue js for the frontend. Follow the instructions below to set up and run the project.
 
 ## Prerequisites
 
@@ -57,6 +57,16 @@ This project combines Laravel as the backend framework with alpinejs & tailwind 
 9. **Access the application in your browser:**
 
 Open your browser and navigate to http://127.0.0.1:8000 or desired port show in your terminal.
+
+10. The login page for the application will be shown. Enter the application with the credentials listed below.
+- Email
+  ```
+  admin@mail.com
+  ```
+- Password
+  ```
+  123456
+  ```
 
 
    

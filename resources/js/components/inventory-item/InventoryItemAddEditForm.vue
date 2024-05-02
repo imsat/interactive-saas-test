@@ -117,7 +117,7 @@ export default {
                 <div class="row g-2 pb-3">
                     <div class="col-md">
                         <div class="form-floating mb-3">
-                            <input class="form-control" type="file" required id="image" @change="handleImage">
+                            <input class="form-control" type="file" :required="action !== 'edit'" id="image" @change="handleImage">
                             <label for="image">Image</label>
                             <Validation :error-text="getError('image')"/>
                             <img :src="inventoryItemForm.show_image" class="img-fluid w-25 mt-1" alt="Item image" v-if="inventoryItemForm.show_image">

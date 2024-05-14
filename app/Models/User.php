@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,6 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'status',
+        'subscription',
     ];
 
     /**
@@ -68,4 +70,18 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function isOnPaidPlan()
+    {
+        return !!$this->$this->subscription;
+    }
+
+    protected function download_limit()
+    {
+        if ($this->subscription) {
+            return 10;
+        }
+        return 2;
+    }
+
 }

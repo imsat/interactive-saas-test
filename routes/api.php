@@ -15,7 +15,7 @@ Route::prefix('/v1')->group(function () {
     })->middleware('auth:api');
 
     //Authentication Section
-    Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/login', [LoginController::class, 'login'])->middleware('incremental.block');
     Route::post('/logout', [LoginController::class, 'logout']);
     Route::post('/register', [RegisterController::class, 'register']);
 

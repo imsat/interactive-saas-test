@@ -5,9 +5,9 @@ services:
     build:
       context: ./dockerfiles
       dockerfile: nginx.dockerfile
-    container_name: nginx_module
+    container_name: nginx_interactive
     ports:
-      - 83:80
+      - 81:80
     volumes:
       - ./:/var/www/html
     depends_on:
@@ -15,45 +15,45 @@ services:
       - php
   mysql:
     image: mysql:5.7
-    container_name: mysql_module
+    container_name: mysql_interactive
     ports:
-      - 3309:3306
+      - 3307:3306
     environment:
-      MYSQL_DATABASE: module
-      MYSQL_USER: module
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: interactive
+      MYSQL_USER: interactive
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
     volumes:
       - ./mysql:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: phpmyadmin_module
+    container_name: phpmyadmin_interactive
     ports:
-      - 8083:80
+      - 8081:80
     environment:
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: password
       PMA_HOST: mysql
-      PMA_USER: module
-      PMA_PASSWORD: secret
+      PMA_USER: interactive
+      PMA_PASSWORD: password
       UPLOAD_LIMIT: 64M
   php:
     build:
       context: ./dockerfiles
       dockerfile: php.dockerfile
-    container_name: php_module
+    container_name: php_interactive
     volumes:
       - ./:/var/www/html
   composer:
     build:
       context: ./dockerfiles
       dockerfile: composer.dockerfile
-    container_name: composer_module
+    container_name: composer_interactive
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html
   npm:
     image: node:current-alpine
-    container_name: npm_module
+    container_name: npm_interactive
     volumes:
       - ./:/var/www/html
     entrypoint: ["npm"]
@@ -62,7 +62,7 @@ services:
     build:
       context: ./dockerfiles
       dockerfile: php.dockerfile
-    container_name: artisan_module
+    container_name: artisan_interactive
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html

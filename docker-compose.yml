@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./dockerfiles
+      dockerfile: nginx.dockerfile
+    container_name: nginx_module
+    ports:
+      - 83:80
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+      - php
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_module
+    ports:
+      - 3309:3306
+    environment:
+      MYSQL_DATABASE: module
+      MYSQL_USER: module
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - ./mysql:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_module
+    ports:
+      - 8083:80
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      PMA_HOST: mysql
+      PMA_USER: module
+      PMA_PASSWORD: secret
+      UPLOAD_LIMIT: 64M
+  php:
+    build:
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    container_name: php_module
+    volumes:
+      - ./:/var/www/html
+  composer:
+    build:
+      context: ./dockerfiles
+      dockerfile: composer.dockerfile
+    container_name: composer_module
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+  npm:
+    image: node:current-alpine
+    container_name: npm_module
+    volumes:
+      - ./:/var/www/html
+    entrypoint: ["npm"]
+    working_dir: /var/www/html
+  artisan:
+    build:
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    container_name: artisan_module
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - mysql
+    entrypoint: ["php", "/var/www/html/artisan"]

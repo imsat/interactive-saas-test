@@ -5,8 +5,8 @@ import Register from './views/Register.vue';
 import Home from "./views/Home.vue";
 import Inventory from './views/inventory/Inventory.vue';
 import Profile from "./views/Profile.vue";
-// import CreateInventory from "./views/inventory/CreateInventory.vue";
-// import UpdateInventory from "./views/inventory/UpdateInventory.vue";
+import InventoryAdd from "./views/inventory/InventoryAdd.vue";
+import InventoryEdit from "./views/inventory/InventoryEdit.vue";
 // import InventoryItem from './views/inventory-item/Items.vue';
 // import inventoryItemCreate from "./views/inventory-item/ItemCreate.vue";
 // import inventoryItemUpdate from "./views/inventory-item/ItemUpdate.vue";
@@ -17,8 +17,8 @@ const routes = [
     {path: '/register', name: 'register', component: Register, meta: {title: 'Register', guest: true}},
     {path: '/profile', name: '/profile', component: Profile, meta: {title: 'Profile', requiresAuth: true}},
     {path: '/inventory', name: 'inventory', component: Inventory, meta: {title: 'Inventory list', requiresAuth: true}},
-    // {path: '/inventory/create', name: 'createInventory', component: CreateInventory, meta: {title: 'Create Inventory', requiresAuth: true}},
-    // {path: '/inventory/update/:id', name: 'UpdateInventory', component: UpdateInventory, meta: {title: 'Update Inventory', requiresAuth: true}},
+    {path: '/inventory/add', name: 'inventoryAdd', component: InventoryAdd, meta: {title: 'Inventory Add', requiresAuth: true}},
+    {path: '/inventory/edit/:id', name: 'inventoryEdit', component: InventoryEdit, meta: {title: 'Inventory Edit', requiresAuth: true}},
     // {path: '/inventory/:inventoryId/item', name: 'inventoryItem', component: InventoryItem, meta: {title: 'Inventory item', requiresAuth: true}},
     // {path: '/inventory/:inventoryId/item/create', name: 'inventoryItemCreate', component: inventoryItemCreate, meta: {title: 'Inventory item create', requiresAuth: true}},
     // {path: '/inventory/:inventoryId/item/:id/update', name: 'inventoryItemUpdate', component: inventoryItemUpdate, meta: {title: 'Inventory item update', requiresAuth: true}},

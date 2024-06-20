@@ -23,7 +23,6 @@ const totalPages = computed(() => Math.ceil(totalItems.value / perPage.value));
 const from = computed(() => ((currentPage.value - 1) * perPage.value) + 1);
 const to = computed(() => totalItems.value > currentPage.value * perPage.value ? currentPage.value * perPage.value : totalItems.value);
 
-//Methods
 // Methods
 function setPage(pageNumber) {
     if (pageNumber >= 1 && pageNumber <= totalPages.value) {
@@ -54,7 +53,7 @@ const emit = defineEmits(['page-change']);
                 </a>
             </li>
             <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
-                <a class="page-link" href="#" @click.prevent="setPage(page)">{{ page }}</a>
+                <a class="page-link" :class="{'custom-disabled-link': currentPage === page}" href="javascript:void(0)" @click.prevent="setPage(page)">{{ page }}</a>
             </li>
             <li class="page-item" :class="{ disabled: currentPage === totalPages }">
                 <a class="page-link" href="#" aria-label="Next" @click.prevent="nextPage">
@@ -66,5 +65,8 @@ const emit = defineEmits(['page-change']);
 </template>
 
 <style scoped>
-
+.custom-disabled-link {
+    pointer-events: none;
+    text-decoration: none;
+}
 </style>

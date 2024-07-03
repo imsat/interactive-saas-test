@@ -9,6 +9,8 @@ const {inventoryForm} = storeToRefs(store)
 onBeforeMount(async () => {
     if (props.id) {
         store.setInventory(props.id)
+    }else{
+        store.clear()
     }
 });
 </script>

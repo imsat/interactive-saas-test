@@ -60,12 +60,11 @@ export const useAuthStore = defineStore('auth', {
                     this.user = user;
                     successToast(res?.data?.message);
                     this.router.push('/');
+                }).catch(err => {
+                    const {errors, message} = err?.response?.data;
+                    errorToast(message);
+                    this.errors = errors;
                 })
-            // .catch(err => {
-            //     // const { errors, message } = err?.response?.data ?? { errors: {}, message: 'Unknown error occurred' };
-            //     // errorToast(message);
-            //     // this.errors = errors;
-            // })
 
         },
         async register(this: any) {
@@ -78,12 +77,11 @@ export const useAuthStore = defineStore('auth', {
                     this.user = user;
                     successToast(res?.data?.message);
                     this.router.push('/');
+                }).catch(err => {
+                    const {errors, message} = err?.response?.data;
+                    errorToast(message);
+                    this.errors = errors;
                 })
-            // .catch(err => {
-            //     const {errors, message} = err?.response?.data ?? {errors: {}, message: 'Unknown error occurred'};
-            //     errorToast(message);
-            //     this.errors = errors;
-            // })
         },
         async logout(this: any) {
             await post('/logout', null)

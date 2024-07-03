@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
-import { del, get, getWithParams, post } from "../utils/fetchAPI.js";
-import { errorToast, successToast, confirm } from "../utils/swalUtil.js";
+import {defineStore} from 'pinia';
+import {del, get, getWithParams, post} from "../utils/fetchAPI.js";
+import {errorToast, successToast, confirm} from "../utils/swalUtil.js";
 
 interface Inventory {
     id: number;
@@ -62,11 +62,14 @@ export const useInventoryStore = defineStore('inventory', {
         },
     },
     actions: {
+        clear(){
+            this.$reset();
+        },
         async getInventories(this: any, page = 1) {
-            const payload = { page };
+            const payload = {page};
             await getWithParams('/inventories', payload)
                 .then(res => {
-                    let { data, ...rest } = res?.data?.data;
+                    let {data, ...rest} = res?.data?.data;
                     this.inventories = data;
                     this.pagination = rest;
                 });
@@ -108,17 +111,16 @@ export const useInventoryStore = defineStore('inventory', {
                     this.inventoryForm = {} as InventoryForm;
                     successToast(res?.data?.message);
                     this.router.push('/inventory');
-                })
-                // .catch(err => {
-                //     const { errors, message } = err?.response?.data;
-                //     errorToast(message);
-                //     this.errors = errors;
-                // });
+                }).catch(err => {
+                    const {errors, message} = err?.response?.data;
+                    errorToast(message);
+                    this.errors = errors;
+                });
         },
         updateInventory(this: any, id: number, updatedData: Inventory) {
             const index = this.inventories.findIndex((inventory: Inventory) => inventory.id === id);
             if (index !== -1) {
-                this.inventories[index] = { ...updatedData };
+                this.inventories[index] = {...updatedData};
             }
         },
         async deleteInventory(this: any, id: number) {

@@ -60,13 +60,13 @@ services:
       working_dir: /var/www/html
   frontend:
       build:
-          context: ./frontend
+          context: ./frontend-typescript
           dockerfile: Dockerfile
       container_name: frontend_interactive
       ports:
           - "5173:5173"
       volumes:
-          - ./frontend:/app
+          - ./frontend-typescript:/app
           - ./app/node_modules
       command: ["npm", "run", "dev"]
   artisan:

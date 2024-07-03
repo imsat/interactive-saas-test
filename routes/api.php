@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->group(function () {
 
+//    Route::get('/test', function (Request $request) {
+//        return 'test';
+//    });
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     })->middleware('auth:api');

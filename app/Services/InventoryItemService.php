@@ -2,20 +2,18 @@
 
 namespace App\Services;
 
-use App\Interfaces\InventoryItemInterface;
 use App\Models\InventoryItem;
 
-class InventoryItemService implements InventoryItemInterface
+class InventoryItemService extends Service
 {
     private $filePath = 'inventory-item';
-
-    public function save($data, $inventoryItem = null)
+    public function createOrUpdate($data, $inventoryItem = null)
     {
         if (data_get($data, 'image')) {
             if (!blank($inventoryItem) && $inventoryItem->getRawOriginal('image')) {
-                FileService::deleteFile($inventoryItem->getRawOriginal('image'));
+                UploadService::cleanFile($inventoryItem->getRawOriginal('image'));
             }
-            $data['image'] = FileService::uploadFile($data['image'], $this->filePath);
+            $data['image'] = UploadService::upload($data['image'], $this->filePath);
         }
 
         if (blank($inventoryItem)) {

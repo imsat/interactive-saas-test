@@ -1,12 +1,10 @@
 <script>
-import PageHeading from "../../components/PageHeading.vue";
 import Pagination from "../../components/Pagination.vue";
-import {confirm, successToast} from "../../bootstrap.js";
-import Spinner from "../../components/Spinner.vue";
+import {toast} from "vue3-toastify";
 
 export default {
     name: "Inventory",
-    components: {Spinner, Pagination, PageHeading},
+    components: {Pagination},
     data() {
         return {
             isLoading: false,
@@ -19,83 +17,74 @@ export default {
     },
     methods: {
         async getInventories(page = 1) {
-            const payload = {page}
+            // const payload = {page}
             this.isLoading = true
-            await axios.get('/inventories', {params: payload})
+            await axios.get('/inventories', {params: {page}})
                 .then(res => {
                     let {data, ...rest} = res?.data?.data
                     this.inventories = data
                     this.pagination = rest
-                }).catch(errors => {
-                    //
                 }).finally(() => this.isLoading = false)
         },
         deleteInventory(id) {
-            confirm().then(result => {
-                if (result.value) {
-                    this.isLoading = true
-                    axios.delete(`/inventories/${id}`)
-                        .then(res => {
-                            successToast(res?.data?.message)
-                            this.getInventories()
-                        }).catch(errors => {
-                        //
+            if (confirm('Are you sure to delete?')) {
+                this.isLoading = true
+                axios.delete(`/inventories/${id}`)
+                    .then(res => {
+                        toast(res?.data?.message)
+                        this.getInventories()
                     }).finally(() => this.isLoading = false)
-                }
-            });
+            }
         }
     }
 }
 </script>
 
 <template>
-    <PageHeading title="Inventory Management"/>
-    <div class="card shadow">
-        <div class="card-header border-0">
-            All Inventories
-            <router-link to="/inventory/add" class="btn btn-sm btn-info float-end" title="Add"><i
-                class="bi bi-plus-lg"></i> Add New
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Inventory</h1>
+            <router-link to="/inventory/create" class="btn btn-sm btn-primary" title="Create"><i
+                class="bi bi-plus-lg"></i> Create
             </router-link>
         </div>
-        <div class="card-body">
-            <Spinner v-if="isLoading"/>
-            <div class="table-responsive small" v-else>
-                <table class="table table-sm table-bordered text-center">
-                    <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col" style="width: 40%">Description</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(inventory, i) in inventories" :key="i">
-                        <th scope="row">{{ inventory?.id }}</th>
-                        <td>{{ inventory?.name }}</td>
-                        <td>{{ inventory?.description }}</td>
-                        <td>
-                            <router-link :to="{ name: 'inventoryItem', params: {inventoryId: inventory?.id} }"
-                                         class="btn btn-sm btn-info ms-2" title="Inventory Item">
-                                <i class="bi bi-building-add"></i>
-                            </router-link>
-                            <router-link :to="{ name: 'inventoryEdit', params: {id: inventory?.id} }"
-                                         class="btn btn-sm btn-success ms-2" title="Edit">
-                                <i class="bi bi-pencil-square"></i>
-                            </router-link>
-                            <button type="button" class="btn btn-sm btn-danger ms-2" title="Delete"
-                                    @click="deleteInventory(inventory?.id)">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <Pagination :current-page="pagination.current_page" :total-items="pagination.total"
-                            :per-page="pagination.per_page" @page-change="getInventories"></Pagination>
-            </div>
+        <div class="table-responsive small" v-if="!isLoading">
+            <table class="table table-striped table-sm text-center">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(inventory, i) in inventories" :key="i">
+                    <td>{{ inventory?.id }}</td>
+                    <td>{{ inventory?.name }}</td>
+                    <td>{{ inventory?.description }}</td>
+                    <td>
+                        <router-link :to="{ name: 'inventoryItem', params: {inventoryId: inventory?.id} }"
+                                     class="btn btn-sm btn-primary me-2" title="Inventory Item"><i class="bi bi-boxes"></i>
+                            Item
+                        </router-link>
+                        <router-link :to="{ name: 'inventoryUpdate', params: {id: inventory?.id} }"
+                                     class="btn btn-sm btn-info me-2" title="Edit"><i class="bi bi-pencil-square"></i>
+                            Edit
+                        </router-link>
+                        <button type="button" class="btn btn-sm btn-danger" title="Delete"
+                                @click="deleteInventory(inventory?.id)">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <Pagination :currentPageIndex="pagination.current_page" :totalRecords="pagination.total"
+                        :recordsPerPage="pagination.per_page" @pageChanged="getInventories"></Pagination>
         </div>
-    </div>
+    </main>
 </template>
 
 <style scoped>

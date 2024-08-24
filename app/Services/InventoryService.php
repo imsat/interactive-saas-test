@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use App\Interfaces\InventoryInterface;
 use App\Models\Inventory;
 
-class InventoryService implements InventoryInterface
+class InventoryService extends Service
 {
-    public function save($data, $inventory = null)
+    public function createOrUpdate($data, $inventory = null)
     {
         if (blank($inventory)) {
             $inventory = new Inventory();

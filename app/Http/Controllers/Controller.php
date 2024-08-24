@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\JsonResponseTrait;
+use App\Traits\ApiResponseTrait;
 
 abstract class Controller
 {
-    use JsonResponseTrait;
+    use ApiResponseTrait;
 }

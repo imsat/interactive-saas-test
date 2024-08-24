@@ -9,12 +9,14 @@
         "@vitejs/plugin-vue": "^5.0.4",
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0",
-        "sass": "^1.74.1",
+        "sass": "^1.72.0",
         "vite": "^5.0"
     },
     "dependencies": {
         "bootstrap": "^5.3.3",
-        "sweetalert2": "^11.10.7",
-        "vue-router": "^4.3.0"
+        "bootstrap-icons": "^1.11.3",
+        "vue-awesome-paginate": "^1.1.46",
+        "vue-router": "^4.3.0",
+        "vue3-toastify": "^0.2.1"
     }
 }

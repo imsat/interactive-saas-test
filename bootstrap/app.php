@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
 //        $middleware->api([]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
+
         // Custom NotFoundHttpException handle
         $exceptions->renderable(function (NotFoundHttpException $e) {
             return response()->json([

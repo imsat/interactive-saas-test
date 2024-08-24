@@ -1,67 +1,22 @@
 <script>
-import {successToast} from "../bootstrap.js";
-
 export default {
     name: "Navbar",
     data() {
         return {
-            token: localStorage.getItem('token'),
-            user: JSON.parse(localStorage.getItem('user')),
-        }
-    },
-    methods: {
-        async logout() {
-            await axios.post('/logout', this.loginForm).then(res => {
-                const {message} = res.data
-                successToast(message)
-                localStorage?.removeItem('token')
-                localStorage?.removeItem('user')
-                this.$router.push('/login')
-                location.reload()
-            })
+            token: localStorage.getItem('token')
         }
     }
 }
 </script>
 <template>
-    <header class="p-3 mb-3 border-bottom">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/"
-                   class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none fw-bold text-info h2">
-                    Interactive Care
-                </a>
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li>
-                        <router-link to="/inventory" class="nav-link px-2" v-if="token">Inventory Management</router-link>
-                    </li>
-                </ul>
-
-                <router-link to="/login" class="btn btn-sm btn-light" v-if="!token">Login</router-link>
-                <router-link to="/register" class="btn btn-sm btn-light mx-2" v-if="!token">Register</router-link>
-
-                <div class="dropdown text-end" v-if="token">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                        {{user?.name}}
-                    </a>
-                    <ul class="dropdown-menu text-small">
-                        <li>
-                            <router-link to="/profile" class="dropdown-item">Profile</router-link>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="javascript:void(0)" @click.prevent="logout()">Sign out</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+    <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Interactive Care</a>
+        <div class="text-end px-3" v-if="!token">
+            <router-link to="/login" class="btn btn-sm btn-light text-dark me-2">Login</router-link>
+            <router-link to="/register" class="btn btn-sm btn-primary">Register</router-link>
         </div>
     </header>
 </template>
 
 <style scoped>
-
 </style>

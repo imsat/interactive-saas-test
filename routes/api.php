@@ -1,29 +1,22 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InventoryItemController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
 Route::prefix('/v1')->group(function () {
-
-//    Route::get('/test', function (Request $request) {
-//        return 'test';
-//    });
-
     Route::get('/user', function (Request $request) {
         return $request->user();
-    })->middleware('auth:api');
+    })->middleware('auth:sanctum');
+    //Auth routes
+    Route::post("/register", [UserController::class, "register"]);
+    Route::post("/login", [UserController::class, "login"]);
 
-    //Authentication Section
-    Route::post('/login', [LoginController::class, 'login']);
-    Route::post('/logout', [LoginController::class, 'logout']);
-    Route::post('/register', [RegisterController::class, 'register']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post("/logout", [UserController::class, "logout"]);
 
-    Route::middleware('auth:api')->group(function () {
         Route::apiResource('/inventories', InventoryController::class);
         Route::apiResource('/inventories/{inventory}/inventoryItems', InventoryItemController::class);
     });

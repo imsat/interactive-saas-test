@@ -3,5 +3,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('{path}', function () {
-    return view('app');
+    return view('welcome');
 })->where('path', '([A-z\d\-\/_.]+)?');

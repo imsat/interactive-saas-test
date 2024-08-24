@@ -6,12 +6,11 @@ use App\Models\Inventory;
 use App\Models\InventoryItem;
 use App\Services\InventoryItemService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class InventoryItemController extends Controller
 {
-    protected $inventoryItemService;
+    private $inventoryItemService;
 
     public function __construct(InventoryItemService $inventoryItemService)
     {
@@ -23,12 +22,12 @@ class InventoryItemController extends Controller
      */
     public function index(Request $request, Inventory $inventory)
     {
-        if ($this->checkInventoryOwnership($inventory)) {
-            return $this->apiResponse(false, 'Something went wrong!', null, 404);
-        }
-
         try {
-            $perPage = data_get($request, 'per_page', 10);
+            if ($inventory->user_id !== auth()->id()) {
+                return $this->response(false, 'Something went wrong!', null, [], 404);
+            }
+
+            $perPage = (int)$request->get('per_page', 10);
             $data['inventory_items'] = InventoryItem::select('id', 'name', 'image', 'quantity', 'description')
                 ->whereInventoryId($inventory->id)
                 ->latest()
@@ -36,9 +35,9 @@ class InventoryItemController extends Controller
 
             $data['inventory'] = $inventory->only('id', 'name');
 
-            return $this->apiResponse(true, 'Inventory item list', $data);
+            return $this->response(true, 'Inventory item list', $data);
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
     }
 
@@ -47,13 +46,14 @@ class InventoryItemController extends Controller
      */
     public function show(Inventory $inventory, InventoryItem $inventoryItem)
     {
-        if ($this->checkInventoryOwnership($inventory)) {
-            return $this->apiResponse(false, 'Something went wrong!', null, 404);
+        if ($inventory->user_id !== auth()->id()) {
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
+
         try {
-            return $this->apiResponse(true, 'Inventory Item details', $inventoryItem);
+            return $this->response(true, 'Inventory Item details', $inventoryItem);
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, $e->getMessage() ?? 'Something went wrong!', null, [],404);
         }
     }
 
@@ -62,25 +62,26 @@ class InventoryItemController extends Controller
      */
     public function store(Request $request, Inventory $inventory)
     {
-        if ($this->checkInventoryOwnership($inventory)) {
-            return $this->apiResponse(false, 'Something went wrong!', null, 404);
+        if ($inventory->user_id !== auth()->id()) {
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'quantity' => 'required|integer',
             'image' => 'required|image|max:2048',
+            'description' => 'nullable',
         ]);
         if ($validator->fails()) {
-            return $this->apiResponse(false, 'Invalid data!', null, 400, $validator->errors());
+            return $this->response(false, 'Please provide the validate data', null, $validator->errors(), 422);
         }
-        $data = $request->only(['name', 'description', 'image', 'description']);
+        $data = $request->only(['name', 'quantity', 'image', 'description']);
         $data['inventory_id'] = $inventory->id;
 
         try {
-            $inventoryItem = $this->inventoryItemService->save($data);
-            return $this->apiResponse(true, 'Created successfully', $inventoryItem);
+            $inventoryItem = $this->inventoryItemService->createOrUpdate($data);
+            return $this->response(true, 'Created successfully', $inventoryItem);
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
     }
 
@@ -89,24 +90,25 @@ class InventoryItemController extends Controller
      */
     public function update(Request $request, Inventory $inventory, InventoryItem $inventoryItem)
     {
-        if ($this->checkInventoryOwnership($inventory)) {
-            return $this->apiResponse(false, 'Something went wrong!', null, 404);
+        if ($inventory->user_id !== auth()->id()) {
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|string',
             'quantity' => 'nullable|integer',
             'image' => 'nullable|image|max:2048',
+            'description' => 'nullable',
         ]);
         if ($validator->fails()) {
-            return $this->apiResponse(false, 'Invalid data!', null, 400, $validator->errors());
+            return $this->response(false, 'Please provide the validate data', null, $validator->errors(), 422);
         }
-        $data = $request->only(['name', 'description', 'image', 'description']);
+        $data = $request->only(['name', 'quantity', 'image', 'description']);
 
         try {
-            $inventoryItem = $this->inventoryItemService->save($data, $inventoryItem);
-            return $this->apiResponse(true, 'Updated successfully', $inventoryItem);
+            $inventoryItem = $this->inventoryItemService->createOrUpdate($data, $inventoryItem);
+            return $this->response(true, 'Updated successfully', $inventoryItem);
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
     }
 
@@ -115,20 +117,15 @@ class InventoryItemController extends Controller
      */
     public function destroy(Inventory $inventory, InventoryItem $inventoryItem)
     {
-        if ($this->checkInventoryOwnership($inventory)) {
-            return $this->apiResponse(false, 'Something went wrong!', null, 404);
-        };
+        if ($inventory->user_id !== auth()->id()) {
+            return $this->response(false, 'Something went wrong!', null, [], 404);
+        }
         try {
             $this->inventoryItemService->delete($inventoryItem);
-            return $this->apiResponse(true, 'Deleted successfully');
+            return $this->response(true, 'Deleted successfully');
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
 
-    }
-
-    private function checkInventoryOwnership($inventory)
-    {
-        return $inventory->user_id !== Auth::id();
     }
 }

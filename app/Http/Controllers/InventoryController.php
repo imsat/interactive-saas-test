@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\InventoryInterface;
 use App\Models\Inventory;
+use App\Services\InventoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class InventoryController extends Controller
 {
-    protected $inventoryService;
+    private $inventoryService;
 
-    public function __construct(InventoryInterface $inventoryService)
+    public function __construct(InventoryService $inventoryService)
     {
         $this->inventoryService = $inventoryService;
     }
@@ -23,15 +23,15 @@ class InventoryController extends Controller
     public function index(Request $request)
     {
         try {
-            $perPage = data_get($request, 'per_page', 10);
+            $perPage = (int)$request->get('per_page', 15);
 
             $inventories = Inventory::select('id', 'name', 'description')
-                ->where('user_id', Auth::id())
+                ->whereUserId(auth()->id())
                 ->latest()
                 ->paginate($perPage);
-            return $this->apiResponse(true, 'Inventory list', $inventories);
+            return $this->response(true, 'Inventory list', $inventories);
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
     }
 
@@ -41,9 +41,9 @@ class InventoryController extends Controller
     public function show(Inventory $inventory)
     {
         try {
-            return $this->apiResponse(true, 'Inventory details', $inventory);
+            return $this->response(true, 'Inventory details', $inventory);
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, $e->getMessage() ?? 'Something went wrong!', null, [],404);
         }
     }
 
@@ -58,17 +58,17 @@ class InventoryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->apiResponse(false, 'Invalid data!', null, 400, $validator->errors());
+            return $this->response(false, 'Please provide the validate data', null, $validator->errors(), 422);
         }
 
         $data = $request->only('name', 'description');
-        $data['user_id'] = Auth::id();
+        $data['user_id'] = auth()->id();
 
         try {
-            $results = $this->inventoryService->save($data);
-            return $this->apiResponse(true, 'Created successfully', $results);
+            $results = $this->inventoryService->createOrUpdate($data);
+            return $this->response(true, 'Created successfully', $results);
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
     }
 
@@ -82,15 +82,15 @@ class InventoryController extends Controller
             'description' => 'nullable',
         ]);
         if ($validator->fails()) {
-            return $this->apiResponse(false, 'Invalid data!', null, 400, $validator->errors());
+            return $this->response(false, 'Please provide the validate data', null, $validator->errors(), 422);
         }
         $data = $request->only('name', 'description');
 
         try {
-            $results = $this->inventoryService->save($data, $inventory);
-            return $this->apiResponse(true, 'Updated successfully', $results);
+            $results = $this->inventoryService->createOrUpdate($data, $inventory);
+            return $this->response(true, 'Updated successfully', $results);
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
     }
 
@@ -101,9 +101,9 @@ class InventoryController extends Controller
     {
         try {
             $this->inventoryService->delete($inventory);
-            return $this->apiResponse(true, 'Deleted successfully');
+            return $this->response(true, 'Deleted successfully');
         } catch (\Exception $e) {
-            return $this->apiResponse(false, $e->getMessage() ?? 'Something went wrong!', null, 404);
+            return $this->response(false, 'Something went wrong!', null, [], 404);
         }
     }
 }
